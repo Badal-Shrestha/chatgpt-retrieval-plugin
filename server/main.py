@@ -5,6 +5,9 @@ from fastapi import FastAPI, File, Form, HTTPException, Depends, Body, UploadFil
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
+from dotenv import load_dotenv
+load_dotenv("/Users/ns-0.5/Documents/chulo/chatgpt-retrieval-plugin/.env")
+
 
 from models.api import (
     DeleteRequest,
@@ -20,9 +23,14 @@ from services.file import get_document_from_file
 from models.models import DocumentMetadata, Source
 
 bearer_scheme = HTTPBearer()
-BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
+BEARER_TOKEN = os.environ.get("BEARER_TOKEN","")
+print(BEARER_TOKEN)
+WEAVIATE_CLASS = os.environ.get("WEAVIATE_CLASS")
+WEAVIATE_URL = os.environ.get("WEAVIATE_URL")
 assert BEARER_TOKEN is not None
-
+WEAVIATE_CLASS="OpenAIDocument"
+assert WEAVIATE_CLASS
+print(WEAVIATE_URL)
 
 def validate_token(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
     if credentials.scheme != "Bearer" or credentials.credentials != BEARER_TOKEN:
@@ -99,6 +107,7 @@ async def query_main(
         )
         return QueryResponse(results=results)
     except Exception as e:
+        raise
         logger.error(e)
         raise HTTPException(status_code=500, detail="Internal Service Error")
 

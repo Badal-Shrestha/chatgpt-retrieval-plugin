@@ -4,9 +4,13 @@ import os
 from loguru import logger
 
 from tenacity import retry, wait_random_exponential, stop_after_attempt
+from dotenv import load_dotenv
+load_dotenv("/Users/ns-0.5/Documents/chulo/chatgpt-retrieval-plugin/.env")
 
 EMBEDDING_MODEL = os.environ.get("EMBEDDING_MODEL", "text-embedding-3-large")
-EMBEDDING_DIMENSION = int(os.environ.get("EMBEDDING_DIMENSION", 256))
+EMBEDDING_DIMENSION = int(os.environ.get("EMBEDDING_DIMENSION"))
+# OPENAI_API_KEY= os.environ.get("OPENAI_APIKEY")
+# assert OPENAI_API_KEY
 
 
 @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(3))

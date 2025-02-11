@@ -19,9 +19,10 @@ from models.models import (
     QueryWithEmbedding,
     Source,
 )
-
+from dotenv import load_dotenv
+load_dotenv("/Users/ns-0.5/Documents/chulo/chatgpt-retrieval-plugin/.env")
 WEAVIATE_URL_DEFAULT = "http://localhost:8080"
-WEAVIATE_CLASS = os.environ.get("WEAVIATE_CLASS", "OpenAIDocument")
+WEAVIATE_CLASS = os.environ.get("WEAVIATE_CLASS")
 
 WEAVIATE_BATCH_SIZE = int(os.environ.get("WEAVIATE_BATCH_SIZE", 20))
 WEAVIATE_BATCH_DYNAMIC = os.environ.get("WEAVIATE_BATCH_DYNAMIC", False)
@@ -105,7 +106,7 @@ class WeaviateDataStore(DataStore):
         auth_credentials = self._build_auth_credentials()
 
         url = os.environ.get("WEAVIATE_URL", WEAVIATE_URL_DEFAULT)
-
+        print()
         logger.debug(
             f"Connecting to weaviate instance at {url} with credential type {type(auth_credentials).__name__}"
         )
@@ -173,6 +174,7 @@ class WeaviateDataStore(DataStore):
                         else None
                     )
                     embedding = doc_chunk_dict.pop("embedding")
+                    # print(doc_chunk_dict)
 
                     batch.add_data_object(
                         uuid=doc_uuid,
@@ -183,6 +185,11 @@ class WeaviateDataStore(DataStore):
 
                 doc_ids.append(doc_id)
             batch.flush()
+            import json
+            result = self.client.query.get(WEAVIATE_CLASS, ["chunk_id", "source"]).do()
+            # print(json.dumps(result, indent=2))
+            # print(batch, dir(batch),WEAVIATE_CLASS)
+
         return doc_ids
 
     async def _query(
@@ -239,6 +246,7 @@ class WeaviateDataStore(DataStore):
                 )
 
             query_results: List[DocumentChunkWithScore] = []
+            print("*--- ", WEAVIATE_CLASS, result)
             response = result["data"]["Get"][WEAVIATE_CLASS]
 
             for resp in response:

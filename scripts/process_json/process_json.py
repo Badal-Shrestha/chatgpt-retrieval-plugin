@@ -9,9 +9,10 @@ from datastore.datastore import DataStore
 from datastore.factory import get_datastore
 from services.extract_metadata import extract_metadata_from_document
 from services.pii_detection import screen_text_for_pii
-
+import os
 DOCUMENT_UPSERT_BATCH_SIZE = 50
-
+OPEN_API_KEY = os.environ.get("OPEN_API_KEY")
+assert OPEN_API_KEY is not None
 
 async def process_json_dump(
     filepath: str,
@@ -54,7 +55,7 @@ async def process_json_dump(
                 created_at=created_at,
                 author=author,
             )
-            logger.info("metadata: ", str(metadata))
+            # logger.info("metadata: ", str(metadata))
 
             # update metadata with custom values
             for key, value in custom_metadata.items():

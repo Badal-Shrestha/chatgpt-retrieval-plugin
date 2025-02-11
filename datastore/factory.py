@@ -4,6 +4,7 @@ import os
 
 async def get_datastore() -> DataStore:
     datastore = os.environ.get("DATASTORE")
+    print("Selected database ", datastore)
     assert datastore is not None
 
     match datastore:
