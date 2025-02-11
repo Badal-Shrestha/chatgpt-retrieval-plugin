@@ -4,8 +4,7 @@ import os
 from loguru import logger
 
 from tenacity import retry, wait_random_exponential, stop_after_attempt
-from dotenv import load_dotenv
-load_dotenv("/Users/ns-0.5/Documents/chulo/chatgpt-retrieval-plugin/.env")
+
 
 EMBEDDING_MODEL = os.environ.get("EMBEDDING_MODEL", "text-embedding-3-large")
 EMBEDDING_DIMENSION = int(os.environ.get("EMBEDDING_DIMENSION"))

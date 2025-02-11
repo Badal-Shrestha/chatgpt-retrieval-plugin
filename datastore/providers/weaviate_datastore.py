@@ -19,8 +19,7 @@ from models.models import (
     QueryWithEmbedding,
     Source,
 )
-from dotenv import load_dotenv
-load_dotenv("/Users/ns-0.5/Documents/chulo/chatgpt-retrieval-plugin/.env")
+
 WEAVIATE_URL_DEFAULT = "http://localhost:8080"
 WEAVIATE_CLASS = os.environ.get("WEAVIATE_CLASS")
 

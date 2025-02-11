@@ -5,8 +5,8 @@ from fastapi import FastAPI, File, Form, HTTPException, Depends, Body, UploadFil
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
-from dotenv import load_dotenv
-load_dotenv("/Users/ns-0.5/Documents/chulo/chatgpt-retrieval-plugin/.env")
+
+
 
 
 from models.api import (

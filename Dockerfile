@@ -5,6 +5,8 @@ WORKDIR /tmp
 
 RUN pip install poetry
 
+RUN poetry self add poetry-plugin-export
+
 COPY ./pyproject.toml ./poetry.lock* /tmp/
 
 
@@ -21,4 +23,4 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY . /code/
 
 # Heroku uses PORT, Azure App Services uses WEBSITES_PORT, Fly.io uses 8080 by default
-CMD ["sh", "-c", "uvicorn server.main:app --host 0.0.0.0 --port ${PORT:-${WEBSITES_PORT:-8080}}"]
+CMD ["sh", "-c", "uvicorn server.main:app --host 0.0.0.0 --port 8000"]
