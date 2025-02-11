@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      QUERY_DEFAULTS_LIMIT: '25'
+      ENABLE_MODULES: 'text2vec-openai'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-openai'
+      OPENAI_APIKEY: ${OPENAI_API_KEY} # Load from .env
+
+  retrieval_plugin:
+    build: .
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - weaviate
+    env_file:
+      - .env # Load environment variables from the .env file
+
+volumes:
+  weaviate_data:
