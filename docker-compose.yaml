@@ -26,5 +26,16 @@ services:
     env_file:
       - .env # Load environment variables from the .env file
 
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+
 volumes:
   weaviate_data:
+
